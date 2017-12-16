@@ -31,13 +31,23 @@ namespace Shipwreck.KokoroIOBot
                     var json = await res.Content.ReadAsStringAsync();
                     var iir = JsonConvert.DeserializeObject<IdolImageResult>(json);
 
-                    var img = iir.Items[new Random().Next(iir.Items.Count)];
-
-                    var newUrl = await ImageSanitizer.GetSafeUrlAsync(img.ImageUrl).ConfigureAwait(false);
-
-                    using (var bc = new BotClient())
+                    if (iir.Items?.Count > 0)
                     {
-                        await bc.PostMessageAsync(message.Channel.Id, $"[]({newUrl})", isNsfw: false).ConfigureAwait(false);
+                        var img = iir.Items[new Random().Next(iir.Items.Count)];
+
+                        var newUrl = await ImageSanitizer.GetSafeUrlAsync(img.ImageUrl).ConfigureAwait(false);
+
+                        using (var bc = new BotClient())
+                        {
+                            await bc.PostMessageAsync(message.Channel.Id, $"[]({newUrl})", isNsfw: false).ConfigureAwait(false);
+                        }
+                    }
+                    else
+                    {
+                        using (var bc = new BotClient())
+                        {
+                            await bc.PostMessageAsync(message.Channel.Id, "Not Found", isNsfw: false).ConfigureAwait(false);
+                        }
                     }
                 }
             }
