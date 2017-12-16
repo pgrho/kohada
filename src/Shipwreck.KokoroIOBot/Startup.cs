@@ -54,6 +54,7 @@ namespace Shipwreck.KokoroIOBot
             };
             BotClient.DefaultAccessToken = Configuration["AccessToken"];
             ImageSanitizer.GyazoAccessToken = Configuration["GyazoAccessToken"];
+            PriparaCommand.AnimeDBAccessToken = Configuration["AnimeDBAccessToken"];
 
             routeBuilder.MapGet("", async (c) =>
             {

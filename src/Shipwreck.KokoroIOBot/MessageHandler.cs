@@ -8,7 +8,8 @@ namespace Shipwreck.KokoroIOBot
     {
         private static readonly IBotCommand[] COMMANDS = {
             new SachikoCommand(),
-            new ImasCommand()
+            new ImasCommand(),
+            new PriparaCommand()
         };
 
         public static void Handle(Message message)
