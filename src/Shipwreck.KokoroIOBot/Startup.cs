@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging; 
+using Microsoft.Extensions.Logging;
 
 namespace Shipwreck.KokoroIOBot
 {
@@ -18,7 +18,7 @@ namespace Shipwreck.KokoroIOBot
         {
             var builder = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -53,6 +53,7 @@ namespace Shipwreck.KokoroIOBot
                 CallbackSecret = Configuration["CallbackSecret"]
             };
             BotClient.DefaultAccessToken = Configuration["AccessToken"];
+            ImageSanitizer.GyazoAccessToken = Configuration["GyazoAccessToken"];
 
             routeBuilder.MapGet("", async (c) =>
             {

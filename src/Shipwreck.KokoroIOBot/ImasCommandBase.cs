@@ -33,9 +33,11 @@ namespace Shipwreck.KokoroIOBot
 
                     var img = iir.Items[new Random().Next(iir.Items.Count)];
 
+                    var newUrl = await ImageSanitizer.GetSafeUrlAsync(img.ImageUrl).ConfigureAwait(false);
+
                     using (var bc = new BotClient())
                     {
-                        await bc.PostMessageAsync(message.Channel.Id, img.ImageUrl, isNsfw: false).ConfigureAwait(false);
+                        await bc.PostMessageAsync(message.Channel.Id, $"[]({newUrl})", isNsfw: false).ConfigureAwait(false);
                     }
                 }
             }
