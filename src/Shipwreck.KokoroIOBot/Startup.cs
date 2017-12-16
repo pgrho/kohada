@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Text;
+using KokoroIO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Shipwreck.KokoroIO;
+using Microsoft.Extensions.Logging; 
 
 namespace Shipwreck.KokoroIOBot
 {
@@ -48,7 +48,7 @@ namespace Shipwreck.KokoroIOBot
 
             var routeBuilder = new RouteBuilder(app);
 
-            var handler = new IncomingWebhookHandler(m => ImascgCommandHandler.HandleAsync(m))
+            var handler = new IncomingWebhookHandler(m => MessageHandler.Handle(m))
             {
                 CallbackSecret = Configuration["CallbackSecret"]
             };
