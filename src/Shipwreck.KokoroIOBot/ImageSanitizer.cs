@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -6,10 +7,19 @@ namespace Shipwreck.KokoroIOBot
 {
     internal class ImageSanitizer
     {
+        private static readonly Dictionary<string, string> _Cached = new Dictionary<string, string>();
+
         public static string GyazoAccessToken { get; set; }
 
         public static async Task<string> GetSafeUrlAsync(string baseUrl)
         {
+            lock (_Cached)
+            {
+                if (_Cached.TryGetValue(baseUrl, out var u))
+                {
+                    return u;
+                }
+            }
             using (var hc = new HttpClient())
             {
                 var oa = await hc.GetAsync(baseUrl).ConfigureAwait(false);
@@ -41,7 +51,12 @@ namespace Shipwreck.KokoroIOBot
 
                     var jo = JObject.Parse(json);
 
-                    return jo.Property("url")?.Value?.Value<string>();
+                    var u = jo.Property("url")?.Value?.Value<string>();
+
+                    lock (_Cached)
+                    {
+                        return _Cached[baseUrl] = u;
+                    }
                 }
             }
         }
